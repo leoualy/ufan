@@ -10,9 +10,12 @@ import (
 )
 
 type CfgDefault struct {
-	Host string `host`
-	Post int    `port`
-	Url  string `url`
+	Host         string `host`
+	Port         int    `port`
+	TemplatePath string `templatepath`
+	Driver       string `driver`
+	User         string `user`
+	Dbname       string `dbname`
 }
 
 func GetHomeDir() string {
@@ -26,7 +29,7 @@ func GetHomeDir() string {
 
 func GetCfgDefault() CfgDefault {
 	var c = CfgDefault{}
-	dirCfg := path.Join(GetHomeDir(), "default.yaml")
+	dirCfg := path.Join(GetHomeDir(), "ufan-conf", "default.yaml")
 	fileCfg, err := ioutil.ReadFile(dirCfg)
 	if err != nil {
 		fmt.Println(err)
