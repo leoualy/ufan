@@ -4,9 +4,6 @@ import (
 	"fmt"
 	"html/template"
 	"net/http"
-	"strconv"
-	"strings"
-	"ufan/app/cfg"
 )
 
 type Account struct {
@@ -15,10 +12,10 @@ type Account struct {
 }
 
 func indexhtml(w http.ResponseWriter) {
-	tmpl, err := template.ParseFiles("views/index.html")
-	if err != nil {
-		fmt.Println(err)
-	}
+	tmpl, _ := template.ParseFiles("views/index.html")
+	//if err != nil {
+	//	fmt.Println(err)
+	//}
 	var a = Account{}
 	a.Name = `John`
 	a.Age = 23
@@ -29,13 +26,17 @@ func Start() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		indexhtml(w)
 	})
-	c := cfg.GetCfgDefault()
-	portStr := strconv.Itoa(c.Port)
-	hostStr := c.Host
-	s := []string{hostStr, ":", portStr}
-	addrStr := strings.Join(s, "")
-	fmt.Println(addrStr)
-	fmt.Println(c.TemplatePath)
-	fmt.Println("服务运行中...")
-	http.ListenAndServe(addrStr, nil)
+	fmt.Println("启动Ufan...")
+	err := Init()
+	if err != nil {
+		fmt.Println("Ufan启动失败,错误消息", err)
+		return
+	}
+
+	err = http.ListenAndServe(SrvAddrs, nil)
+	if err != nil {
+		fmt.Println("Ufan启动失败,错误消息", err)
+		return
+	}
+	fmt.Println("Ufan启动成功!")
 }
