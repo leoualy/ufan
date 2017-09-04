@@ -2,33 +2,20 @@ package db
 
 import (
 	"database/sql"
-	"fmt"
 	_ "github.com/lib/pq"
-	"ufan/app/cfg"
 )
 
-var connString = ""
+var db *sql.DB
 
-func open() int {
-	var c cfg.CfgDefault
-	if connString == "" {
-		c = cfg.GetCfgDefault()
-		connString = "user=" + c.User + " dbname=" + c.Dbname + " sslmode=disable"
-	}
+func Open(driver string, dataSource string) error {
 
-	fmt.Println(connString)
-	_, err := sql.Open(c.Driver, connString)
+	var err error
+	db, err = sql.Open(driver, dataSource)
 	if err != nil {
-		return -1
+		return err
 	}
-	return 0
-}
-
-// 数据库连接测试
-func TestDbConnection() {
-	if open() == 0 {
-		fmt.Println("数据库连接成功!")
-		return
-	}
-	fmt.Println("数据库连接失败!")
+	// open 操作只是确定参数是否合法，
+	// 不会创建一个数据库连接,
+	// 此处用Ping 函数确定数据库服务是否可以访问
+	return db.Ping()
 }
