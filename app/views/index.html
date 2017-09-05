@@ -2,9 +2,31 @@
 <html lang="zh-cn">
     <head>
         <title>Ufan</title>
+        <style>
+            .divout {
+                border:1px solid #d0d0d0;
+                width:480px;
+                height:560px
+            }
+            .divin {
+                border-bottom:1px solid #d0d0d0;
+                width:480px;
+                height:40px;
+                display:table-cell;vertical-align:middle;
+
+            }
+            #cell {
+                display:table-cell;vertical-align:middle;
+            }
+
+        </style>
     </head>
     <body>
-        <img src="1.png" style="width:192px;height:192px;">
         <h2>ufan: {{ .Name }}</h2>
+        <div class="divout">
+            <div class="divin">
+                发起人:萌货
+            </div>
+        </div>
     </body>
 </html>
