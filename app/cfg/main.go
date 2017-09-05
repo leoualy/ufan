@@ -16,6 +16,7 @@ type CfgDefault struct {
 	Driver       string `driver`
 	User         string `user`
 	Dbname       string `dbname`
+	StaticDir    string `staticdir`
 }
 
 func GetHomeDir() string {
