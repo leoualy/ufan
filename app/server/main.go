@@ -23,15 +23,14 @@ func Start() {
 	})
 	fmt.Println("启动Ufan...")
 	err := Init()
+	OpenStaticFileServe()
 	if err != nil {
 		fmt.Println("Ufan启动失败,错误消息", err)
 		return
 	}
-
-	err = http.ListenAndServe(SrvAddrs, nil)
+	err = ListenAndServe()
 	if err != nil {
 		fmt.Println("Ufan启动失败,错误消息", err)
 		return
 	}
-	fmt.Println("Ufan启动成功!")
 }

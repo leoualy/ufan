@@ -2,6 +2,7 @@ package server
 
 import (
 	"fmt"
+	"net/http"
 	"strconv"
 	"time"
 	"ufan/app/cfg"
@@ -24,15 +25,26 @@ func checkDB(c cfg.CfgDefault) error {
 	return nil
 }
 
-var SrvAddrs string
+var srvAddrs, dirStatic string
 
 func Init() error {
 	fmt.Println("初始化...")
 	c := cfg.GetCfgDefault()
 	err := checkDB(c)
-	SrvAddrs = c.Host + ":" + strconv.Itoa(c.Port)
+	srvAddrs = c.Host + ":" + strconv.Itoa(c.Port)
+	dirStatic = c.StaticDir
+	fmt.Println("静态服务目录:", dirStatic)
 	fmt.Println("初始化完成...")
 	fmt.Println("当前时间:", time.Now())
-	fmt.Println("服务地址:http://", SrvAddrs)
+	fmt.Println("服务地址:http://", srvAddrs)
 	return err
+}
+
+func OpenStaticFileServe() {
+	fsvr := http.FileServer(http.Dir(dirStatic))
+	http.Handle("/static/", http.StripPrefix("/static/", fsvr))
+}
+
+func ListenAndServe() error {
+	return http.ListenAndServe(srvAddrs, nil)
 }
