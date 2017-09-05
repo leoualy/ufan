@@ -2,7 +2,6 @@ package server
 
 import (
 	"fmt"
-	"html/template"
 	"net/http"
 )
 
@@ -12,14 +11,10 @@ type Account struct {
 }
 
 func indexhtml(w http.ResponseWriter) {
-	tmpl, _ := template.ParseFiles("views/index.html")
-	//if err != nil {
-	//	fmt.Println(err)
-	//}
 	var a = Account{}
 	a.Name = `John`
 	a.Age = 23
-	tmpl.Execute(w, a)
+	View(w, "Views/index.html", a)
 }
 
 func Start() {
